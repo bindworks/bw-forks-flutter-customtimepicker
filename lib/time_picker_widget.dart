@@ -992,7 +992,7 @@ class _DialState extends State<_Dial> with SingleTickerProviderStateMixin {
     _theta = _thetaController!
         .drive(CurveTween(curve: Curves.easeIn))
         .drive(_thetaTween!)
-          ..addListener(() => setState(() {/* _theta.value has changed */}));
+      ..addListener(() => setState(() {/* _theta.value has changed */}));
   }
 
   late ThemeData themeData;
@@ -1268,7 +1268,7 @@ class _DialState extends State<_Dial> with SingleTickerProviderStateMixin {
         for (final TimeOfDay timeOfDay in _twentyFourHours)
           _buildTappableLabel(
             textTheme,
-            color,
+            _isSelectableTime(timeOfDay) ? color : color.withOpacity(0.1),
             timeOfDay.hour,
             localizations.formatHour(timeOfDay,
                 alwaysUse24HourFormat: media.alwaysUse24HourFormat),
@@ -2071,11 +2071,9 @@ class _TimePickerDialogState extends State<_TimePickerDialog> {
   Widget build(BuildContext context) {
     assert(debugCheckHasMediaQuery(context));
     final MediaQueryData media = MediaQuery.of(context);
-//     final TimeOfDayFormat timeOfDayFormat = localizations.timeOfDayFormat(
-//         alwaysUse24HourFormat: false //media.alwaysUse24HourFormat
-//         );
-    final bool use24HourDials =
-        false; // hourFormat(of: timeOfDayFormat) != HourFormat.h;
+    final TimeOfDayFormat timeOfDayFormat = localizations.timeOfDayFormat(
+        alwaysUse24HourFormat: media.alwaysUse24HourFormat);
+    final bool use24HourDials = hourFormat(of: timeOfDayFormat) != HourFormat.h;
     final ThemeData theme = Theme.of(context);
     final ShapeBorder shape =
         TimePickerTheme.of(context).shape ?? _kDefaultShape;
